@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>สุขสันต์วันเกิด 🎂</title>
+  <meta name="theme-color" content="#ff7eb3" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Prompt:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- เอฟเฟกต์ confetti / พลุ วาดบน canvas เต็มจอ -->
+  <canvas id="fx"></canvas>
+
+  <!-- ปุ่มเปิด/ปิดเสียง -->
+  <button id="muteBtn" class="mute-btn" aria-label="เปิด/ปิดเสียง" hidden>🔊</button>
+
+  <!-- ============ หน้า 1 : การ์ด ============ -->
+  <section class="page is-active" id="page1">
+    <div class="balloons" aria-hidden="true">
+      <span class="balloon b1"></span>
+      <span class="balloon b2"></span>
+      <span class="balloon b3"></span>
+      <span class="balloon b4"></span>
+    </div>
+
+    <div class="card">
+      <p class="card__greeting" id="greeting">สุขสันต์วันเกิด</p>
+      <div class="card__age" id="age">69</div>
+
+      <div class="polaroid">
+        <div class="polaroid__photo" id="photoWrap">
+          <img id="photo" alt="รูปคนที่เรารัก" />
+          <label class="polaroid__placeholder" id="photoPlaceholder">
+            <span class="polaroid__plus">＋</span>
+            <span class="polaroid__hint">ใส่รูปตรงนี้</span>
+            <input type="file" id="photoInput" accept="image/*" hidden />
+          </label>
+          <button class="polaroid__change" id="changePhoto" type="button" hidden>เปลี่ยนรูป</button>
+        </div>
+        <p class="polaroid__caption" id="photoCaption">❤️</p>
+      </div>
+
+      <button class="btn btn--start pulse" id="startBtn">click me</button>
+    </div>
+  </section>
+
+  <!-- ============ หน้า 2 : กลอน ============ -->
+  <section class="page" id="page2">
+    <div class="poem">
+      <h2 class="poem__title">บทกลอนถึงป๊าม๊า</h2>
+      <div class="poem__verses" id="verses"></div>
+      <button class="btn btn--next" id="nextBtn" hidden>ไปต่อ</button>
+    </div>
+  </section>
+
+  <!-- ============ หน้า 3 : พลุ + ข้อความปิด ============ -->
+  <section class="page" id="page3">
+    <div class="final">
+      <h2 class="final__title" id="finalTitle">ออกกำลังกายนิ้วเสร็จแล้ว! 🎉</h2>
+      <p class="final__msg" id="finalMsg">ได้ออกกำลังกายนิ้วแล้ว ถัดไปก็ออกกำลังกายทั้งตัวนะ 💪</p>
+      <button class="btn btn--restart" id="restartBtn">เริ่มใหม่อีกรอบ</button>
+    </div>
+  </section>
+
+  <script src="config.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
