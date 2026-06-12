@@ -30,6 +30,7 @@
 
   function showPhoto(src) {
     photo.src = src;
+    if (CFG.photoFocus) photo.style.objectPosition = CFG.photoFocus;
     photo.classList.add("is-loaded");
     photoPlaceholder.hidden = true;
     changePhoto.hidden = false;
@@ -163,11 +164,14 @@
     function build() {
       if (built) return;
       built = true;
-      list.forEach((src) => {
+      list.forEach((item) => {
+        const src = typeof item === "string" ? item : item.src;
+        const focus = typeof item === "string" ? "" : item.focus;
         const img = document.createElement("img");
         img.className = "slide";
         img.alt = "รูปความทรงจำ";
         img.loading = "eager";
+        if (focus) img.style.objectPosition = focus;
         img.addEventListener("error", () => {
           slides = slides.filter((s) => s !== img);
           img.remove();

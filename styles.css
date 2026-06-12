@@ -268,11 +268,11 @@ body {
 }
 .slide.is-active {
   opacity: 1;
-  animation: kenburns 7s ease-out both;
+  animation: kenburns 8s ease-out both;
 }
 @keyframes kenburns {
-  from { transform: scale(1.09); }
-  to   { transform: scale(1); }
+  from { transform: scale(1); }
+  to   { transform: scale(1.06); }
 }
 
 .poem__verses {
