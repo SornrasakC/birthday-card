@@ -220,9 +220,29 @@
      ============================================================ */
   const versesEl = $("verses");
   const nextBtn = $("nextBtn");
-  const poem = Array.isArray(CFG.poem) ? CFG.poem : [];
+  const poemRaw = Array.isArray(CFG.poem) ? CFG.poem : [];
   const sp = CFG.speech || {};
   let thaiVoice = null;
+
+  // จัดกลอนเป็น "บท" (คั่นด้วยบรรทัดว่าง) แต่ละบทมีหลาย "วรรค"
+  const stanzas = (() => {
+    const out = [];
+    let cur = [];
+    poemRaw.forEach((line) => {
+      if (String(line).trim() === "") {
+        if (cur.length) { out.push(cur); cur = []; }
+      } else {
+        cur.push(String(line));
+      }
+    });
+    if (cur.length) out.push(cur);
+    return out;
+  })();
+
+  const phraseGap = sp.phraseGapMs != null ? sp.phraseGapMs : 240;
+  const lineGap = sp.lineGapMs != null ? sp.lineGapMs : (sp.pauseBetweenMs || 650);
+  const stanzaGap = sp.stanzaGapMs != null ? sp.stanzaGapMs : 1100;
+  let poemRun = 0; // ไว้ยกเลิกการอ่านชุดเก่าเวลาเริ่มใหม่
 
   function loadVoice() {
     if (!("speechSynthesis" in window)) return;
@@ -238,55 +258,97 @@
   }
 
   function estimateMs(text) {
-    return Math.max(1600, text.length * 190) + 600;
+    return Math.max(900, text.length * 165) + 350;
   }
 
   function startPoem() {
     versesEl.innerHTML = "";
     PoemSlides.start();
-    revealVerse(0);
+    Music.duck(true);
+    revealStanza(0, ++poemRun);
   }
 
-  function revealVerse(i) {
-    if (i >= poem.length) {
+  // ค่อย ๆ จางวรรคบทเก่าก่อนขึ้นบทใหม่
+  function clearVerses(done) {
+    const kids = Array.prototype.slice.call(versesEl.children);
+    if (!kids.length) { done(); return; }
+    kids.forEach((k) => k.classList.add("verse--out"));
+    setTimeout(() => { versesEl.innerHTML = ""; done(); }, 460);
+  }
+
+  function revealStanza(si, run) {
+    if (run !== poemRun) return;
+    if (si >= stanzas.length) {
       Music.duck(false);
       showNextButton();
       return;
     }
+    clearVerses(() => { if (run === poemRun) revealLine(si, 0, run); });
+  }
+
+  function revealLine(si, li, run) {
+    if (run !== poemRun) return;
+    const stanza = stanzas[si];
+    if (li >= stanza.length) {
+      setTimeout(() => revealStanza(si + 1, run), stanzaGap);
+      return;
+    }
     const el = document.createElement("p");
     el.className = "verse speaking";
-    el.textContent = poem[i];
-    el.style.animationDelay = "0s";
+    el.textContent = stanza[li];
     versesEl.appendChild(el);
 
-    let advanced = false;
-    const advance = () => {
-      if (advanced) return;
-      advanced = true;
+    speakLine(stanza[li], run, () => {
+      if (run !== poemRun) return;
       el.classList.remove("speaking");
-      setTimeout(() => revealVerse(i + 1), sp.pauseBetweenMs || 700);
-    };
+      setTimeout(() => revealLine(si, li + 1, run), lineGap);
+    });
+  }
 
+  // อ่านทีละวรรคย่อย (เว้นจังหวะตามช่องว่าง) ให้เหมือนทำนองกลอน
+  function speakLine(text, run, done) {
+    const phrases = text.split(/\s+/).filter(Boolean);
     const canSpeak = sp.enabled !== false && "speechSynthesis" in window && !muted;
-    if (canSpeak) {
-      Music.duck(true);
+    let i = 0;
+
+    if (!canSpeak) {
+      const step = () => {
+        if (run !== poemRun) return;
+        if (i >= phrases.length) { done(); return; }
+        const ms = Math.max(550, phrases[i].length * 150) + phraseGap;
+        i++;
+        setTimeout(step, ms);
+      };
+      step();
+      return;
+    }
+
+    const speakNext = () => {
+      if (run !== poemRun) return;
+      if (i >= phrases.length) { done(); return; }
+      const phrase = phrases[i];
+      let advanced = false;
+      const adv = () => {
+        if (advanced) return;
+        advanced = true;
+        i++;
+        setTimeout(speakNext, phraseGap);
+      };
       try {
-        const u = new SpeechSynthesisUtterance(poem[i]);
+        const u = new SpeechSynthesisUtterance(phrase);
         u.lang = sp.lang || "th-TH";
         if (thaiVoice) u.voice = thaiVoice;
         u.rate = sp.rate || 0.9;
         u.pitch = sp.pitch || 1.0;
-        u.onend = advance;
-        u.onerror = advance;
-        // กันกรณี onend ไม่ทำงานในบางเบราว์เซอร์
-        setTimeout(advance, estimateMs(poem[i]) + 3000);
+        u.onend = adv;
+        u.onerror = adv;
+        setTimeout(adv, estimateMs(phrase) + 2500); // กัน onend ไม่ทำงาน
         speechSynthesis.speak(u);
       } catch (_) {
-        setTimeout(advance, estimateMs(poem[i]));
+        setTimeout(adv, estimateMs(phrase));
       }
-    } else {
-      setTimeout(advance, estimateMs(poem[i]));
-    }
+    };
+    speakNext();
   }
 
   /* ============================================================
@@ -425,6 +487,7 @@
   $("restartBtn").addEventListener("click", () => {
     if (fwTimer) { clearTimeout(fwTimer); fwTimer = null; }
     if ("speechSynthesis" in window) speechSynthesis.cancel();
+    poemRun++; // ยกเลิกการอ่านกลอนชุดเก่า (ถ้ายังค้าง)
     dodges = 0;
     nextBtn.hidden = true;
     nextBtn.classList.remove("is-loose", "pulse");

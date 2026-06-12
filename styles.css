@@ -295,6 +295,10 @@ body {
 @keyframes verseIn {
   to { opacity: 1; transform: translateY(0); }
 }
+.verse--out { animation: verseOut 0.45s ease forwards; }
+@keyframes verseOut {
+  to { opacity: 0; transform: translateY(-12px); }
+}
 .btn--next {
   position: relative;
   margin-top: 34px;
