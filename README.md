@@ -32,10 +32,28 @@
 > ถ้ายังไม่ใส่รูป จะขึ้นกรอบ "ใส่รูปตรงนี้" ให้กดเลือกรูปจากเครื่องเพื่อทดสอบได้
 > (แต่รูปที่เลือกแบบนั้นจะไม่ติดไปกับลิงก์ ต้องใส่ผ่าน `assets/` ถึงจะถาวร)
 
-## เอาขึ้นเว็บให้ส่งลิงก์ได้ (เลือกอย่างใดอย่างหนึ่ง)
+## เว็บที่ host ไว้แล้ว (ลิงก์ส่งให้คนอื่นได้เลย)
 
-- **Netlify Drop** — ลากโฟลเดอร์ `birthday-site` ทั้งโฟลเดอร์ไปวางที่ <https://app.netlify.com/drop> ได้ลิงก์ทันที
-- **GitHub Pages** — push โฟลเดอร์นี้ขึ้น repo แล้วเปิด Pages ชี้ที่โฟลเดอร์
+🔗 **https://sornrasakc.github.io/birthday-card/**
+
+host บน GitHub Pages (repo: `SornrasakC/birthday-card`)
+
+### อัปเดตเว็บหลังแก้ไฟล์ (ใส่รูป/กลอนใหม่)
+
+แก้ไฟล์ในโฟลเดอร์นี้ให้เสร็จ แล้วรันคำสั่งเดียว:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File deploy.ps1
+```
+
+รอ ~1-2 นาที เว็บที่ลิงก์ด้านบนจะอัปเดตเอง
+
+> ⚠️ GitHub Pages เป็น **public** — พอ commit รูปหน้าพ่อขึ้นไป ใครมีลิงก์ก็เปิดดูได้
+> ถ้าไม่อยากให้เป็นสาธารณะ ใช้วิธีอื่นแทน เช่น Netlify Drop (<https://app.netlify.com/drop>) แบบ password / unlisted
+
+### ทางเลือกอื่น
+
+- **Netlify Drop** — ลากโฟลเดอร์ `birthday-site` ไปวางที่ <https://app.netlify.com/drop> ได้ลิงก์ทันที
 - **Vercel / Cloudflare Pages** — ชี้ root ที่โฟลเดอร์นี้ ไม่ต้องตั้ง build command
 
 ## หมายเหตุเรื่องเสียง

@@ -151,6 +151,55 @@
   }
 
   /* ============================================================
+     สไลด์รูปความทรงจำ — เล่นค่อย ๆ เฟดสลับระหว่างอ่านกลอน (หน้า 2)
+     ============================================================ */
+  const PoemSlides = (() => {
+    const wrap = $("poemPhotos");
+    const slidesEl = $("slides");
+    const list = Array.isArray(CFG.poemPhotos) ? CFG.poemPhotos.slice() : [];
+    const interval = CFG.poemPhotoIntervalMs || 3200;
+    let slides = [], idx = 0, timer = null, built = false;
+
+    function build() {
+      if (built) return;
+      built = true;
+      list.forEach((src) => {
+        const img = document.createElement("img");
+        img.className = "slide";
+        img.alt = "รูปความทรงจำ";
+        img.loading = "eager";
+        img.addEventListener("error", () => {
+          slides = slides.filter((s) => s !== img);
+          img.remove();
+        });
+        img.src = src;
+        slidesEl.appendChild(img);
+        slides.push(img);
+      });
+    }
+    function show(n) {
+      if (!slides.length) return;
+      slides.forEach((s, i) => s.classList.toggle("is-active", i === n));
+      idx = n;
+    }
+    return {
+      start() {
+        if (!list.length) return;
+        build();
+        if (!slides.length) return;
+        wrap.hidden = false;
+        show(0);
+        clearInterval(timer);
+        if (slides.length > 1) {
+          timer = setInterval(() => show((idx + 1) % slides.length), interval);
+        }
+      },
+      stop() { clearInterval(timer); timer = null; },
+      reset() { this.stop(); wrap.hidden = true; show(0); },
+    };
+  })();
+
+  /* ============================================================
      หน้า 1 -> หน้า 2 : เริ่มเพลง + อ่านกลอน
      ============================================================ */
   $("startBtn").addEventListener("click", () => {
@@ -190,6 +239,7 @@
 
   function startPoem() {
     versesEl.innerHTML = "";
+    PoemSlides.start();
     revealVerse(0);
   }
 
@@ -270,6 +320,7 @@
       dodge();
       return;
     }
+    PoemSlides.stop();
     goTo(3);
     launchFireworks();
   });
@@ -376,6 +427,7 @@
     nextBtn.removeAttribute("style");
     nextBtn.textContent = CFG.nextButtonText || "ไปต่อ";
     versesEl.innerHTML = "";
+    PoemSlides.reset();
     goTo(1);
   });
 })();
