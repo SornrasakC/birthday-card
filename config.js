@@ -23,15 +23,15 @@ window.CONFIG = {
       { src: "assets/tmp/192612_0.jpg", focus: "center 26%" }, // ป๊า ยิ้ม
       { src: "assets/tmp/192611_0.jpg", focus: "center 30%" }, // ป๊า นั่งพัก
       { src: "assets/20260301_173901.jpg", focus: "center 26%" }, // ป๊า ขี่ม้าโยก
-      { src: "assets/20260415_135440.jpg", focus: "center 18%" }, // ป๊า กอดอก
+      { src: "assets/20260415_135440.jpg", focus: "center 8%" }, // ป๊า กอดอก
     ],
     [
-      { src: "assets/tmp/192617_0.jpg", focus: "center 34%" }, // ม๊า ยิ้ม
-      { src: "assets/tmp/192613_0.jpg", focus: "center 46%" }, // ม๊า ต้นแปะก๊วย
-      { src: "assets/tmp/192615_0.jpg", focus: "center 46%" }, // ม๊า ต้นแปะก๊วย
-      { src: "assets/tmp/192614_0.jpg", focus: "center 32%" }, // ม๊า ชุดญี่ปุ่น
-      { src: "assets/tmp/192616_0.jpg", focus: "center 36%" }, // ม๊า วิวเมือง
-      { src: "assets/20251201_124803.jpg", focus: "center 20%" }, // ม๊า ทาโกะยากิ
+      { src: "assets/tmp/192617_0.jpg", focus: "center 48%" }, // ม๊า ยิ้ม
+      { src: "assets/tmp/192613_0.jpg", focus: "center 64%" }, // ม๊า ต้นแปะก๊วย
+      { src: "assets/tmp/192615_0.jpg", focus: "center 64%" }, // ม๊า ต้นแปะก๊วย
+      { src: "assets/tmp/192614_0.jpg", focus: "center 44%" }, // ม๊า ชุดญี่ปุ่น
+      { src: "assets/tmp/192616_0.jpg", focus: "center 48%" }, // ม๊า วิวเมือง
+      { src: "assets/20251201_124803.jpg", focus: "center 32%" }, // ม๊า ทาโกะยากิ
     ],
     [
       { src: "assets/20251124_192406.jpg", focus: "40% center" }, // ป๊าม๊า กินข้าว
