@@ -31,7 +31,7 @@ window.CONFIG = {
       { src: "assets/tmp/192615_0.jpg", focus: "center 64%" }, // ม๊า ต้นแปะก๊วย
       { src: "assets/tmp/192614_0.jpg", focus: "center 44%" }, // ม๊า ชุดญี่ปุ่น
       { src: "assets/tmp/192616_0.jpg", focus: "center 48%" }, // ม๊า วิวเมือง
-      { src: "assets/20251201_124803.jpg", focus: "center 32%" }, // ม๊า ทาโกะยากิ
+      { src: "assets/20251201_124803.jpg", focus: "center 18%" }, // ม๊า ทาโกะยากิ
     ],
     [
       { src: "assets/20251124_192406.jpg", focus: "40% center" }, // ป๊าม๊า กินข้าว
