@@ -226,7 +226,6 @@
   const poemRaw = Array.isArray(CFG.poem) ? CFG.poem : [];
   const sp = CFG.speech || {};
   const poemAudio = Array.isArray(sp.audio) ? sp.audio : [];
-  const pronunciation = sp.pronunciation || {};
   let thaiVoice = null;
   let activePoemAudio = null;
 
@@ -242,7 +241,7 @@
         const text = String(line);
         cur.push({
           text,
-          spokenText: pronunciation[text] || text,
+          spokenText: text,
           audioSrc: poemAudio[audioIndex] || "",
         });
         audioIndex++;
@@ -339,12 +338,11 @@
     });
   }
 
-  // อ่านหนึ่งวรรคต่อหนึ่งเสียง เพื่อไม่ให้สำเนียงแตกเป็นคำ ๆ
+  // อ่านหนึ่งวรรคต่อหนึ่งเสียงหลัก แต่คงจังหวะหยุดตามช่องว่างในกลอน
   function speakLine(item, run, done) {
     const text = item.text;
     const spokenText = item.spokenText || text;
     const phrases = text.split(/\s+/).filter(Boolean);
-    let i = 0;
 
     if (sp.enabled !== false && !muted && item.audioSrc) {
       playLineAudio(item.audioSrc, run, () => {
@@ -354,19 +352,7 @@
       return;
     }
 
-    if (!canSpeak) {
-      const step = () => {
-        if (run !== poemRun) return;
-        if (i >= phrases.length) { done(); return; }
-        const ms = Math.max(550, phrases[i].length * 150) + phraseGap;
-        i++;
-        setTimeout(step, ms);
-      };
-      step();
-      return;
-    }
-
-    speakWithBrowser(spokenText, run, done);
+    speakPhrasesWithBrowser(phrases.length ? phrases : [spokenText], run, done);
   }
 
   function playLineAudio(src, run, done, fallback) {
@@ -429,6 +415,18 @@
     } catch (_) {
       setTimeout(adv, estimateMs(text));
     }
+  }
+
+  function speakPhrasesWithBrowser(phrases, run, done) {
+    let i = 0;
+    const step = () => {
+      if (run !== poemRun) return;
+      if (i >= phrases.length) { done(); return; }
+      const phrase = phrases[i];
+      i++;
+      speakWithBrowser(phrase, run, () => setTimeout(step, phraseGap));
+    };
+    step();
   }
 
   /* ============================================================
