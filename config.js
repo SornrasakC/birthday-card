@@ -60,11 +60,31 @@ window.CONFIG = {
   speech: {
     enabled: true,      // อ่านกลอนออกเสียง (ใช้เสียงของเครื่อง/เบราว์เซอร์)
     lang: "th-TH",
-    rate: 0.9,          // ความเร็ว (1 = ปกติ)
+    rate: 0.82,         // ความเร็วของเสียงสำรองจากเบราว์เซอร์ (1 = ปกติ)
     pitch: 1.0,
+    audioRate: 0.96,    // ความเร็วไฟล์เสียงกลอนที่เตรียมไว้
     phraseGapMs: 240,   // เว้นจังหวะระหว่างวรรคย่อย (ช่องว่างในบรรทัด)
     lineGapMs: 650,     // เว้นจังหวะจบแต่ละวรรค
     stanzaGapMs: 1100,  // เว้นจังหวะจบแต่ละบท
+    audio: [
+      "assets/audio/poem-01.mp3",
+      "assets/audio/poem-02.mp3",
+      "assets/audio/poem-03.mp3",
+      "assets/audio/poem-04.mp3",
+      "assets/audio/poem-05.mp3",
+      "assets/audio/poem-06.mp3",
+      "assets/audio/poem-07.mp3",
+      "assets/audio/poem-08.mp3",
+      "assets/audio/poem-09.mp3",
+      "assets/audio/poem-10.mp3",
+      "assets/audio/poem-11.mp3",
+      "assets/audio/poem-12.mp3",
+    ],
+    pronunciation: {
+      "ขอพรเกื้อ ให้ป๊า ว่าเฮลตี้": "ขอพรเกื้อ ให้ป๊า สุขภาพดี",
+      "เลี่ยงของมัน โนแอล ได้ยิ่งดี": "เลี่ยงของมัน โน แอลกอฮอล์ ได้ยิ่งดี",
+      "มันนี่อวล หลากกิน ฟินเหลือหลาย": "มันนี่ อวล หลากกิน ฟินเหลือหลาย",
+    },
   },
 
   // เพลงประกอบ Happy Birthday แบบไม่มีเสียงร้อง (สังเคราะห์เสียงเอง เบา ๆ วนไป)
