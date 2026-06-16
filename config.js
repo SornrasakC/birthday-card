@@ -20,7 +20,7 @@ window.CONFIG = {
   //   - รูปแนวนอน 2 คนอยู่คนละมุม ใช้ x เพื่อไม่ให้ตัดคน เช่น "30% center"
   poemPhotoBatches: [
     [
-      { src: "assets/tmp/192612_0.jpg", focus: "center 26%" }, // ป๊า ยิ้ม
+      { src: "assets/tmp/192612_0.jpg", focus: "center 46%" }, // ป๊า ยิ้ม
       { src: "assets/tmp/192611_0.jpg", focus: "center 30%" }, // ป๊า นั่งพัก
       { src: "assets/20260301_173901.jpg", focus: "center 26%" }, // ป๊า ขี่ม้าโยก
       { src: "assets/20260415_135440.jpg", focus: "center 8%" }, // ป๊า กอดอก

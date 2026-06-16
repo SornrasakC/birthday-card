@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Birthday Image Debug</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Arial, "Prompt", sans-serif;
+      background: #fff7f1;
+      color: #3d2f35;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      letter-spacing: 0;
+    }
+    a {
+      color: #c42766;
+      font-weight: 700;
+    }
+    section {
+      margin: 0 0 30px;
+    }
+    h2 {
+      margin: 0 0 12px;
+      font-size: 20px;
+      letter-spacing: 0;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    .item {
+      background: #fff;
+      border: 1px solid #ead8d0;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 8px 22px rgba(90, 50, 70, 0.1);
+    }
+    .item__preview {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      background: #f4e2db;
+      overflow: hidden;
+    }
+    .item--front .item__preview {
+      aspect-ratio: 1 / 1;
+    }
+    .item__preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .item__raw {
+      display: block;
+      width: 100%;
+      height: 160px;
+      object-fit: contain;
+      background: #f8eee9;
+      border-top: 1px solid #ead8d0;
+    }
+    .item__meta {
+      padding: 10px 12px 12px;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    code {
+      overflow-wrap: anywhere;
+      color: #7b3150;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Image Debug</h1>
+    <a href="index.html">Back to card</a>
+  </header>
+  <main id="app"></main>
+  <script src="config.js"></script>
+  <script>
+    (() => {
+      const cfg = window.CONFIG || {};
+      const app = document.getElementById("app");
+      const batches = Array.isArray(cfg.poemPhotoBatches) ? cfg.poemPhotoBatches : [];
+      const groups = [
+        {
+          title: "Front card",
+          className: "item--front",
+          items: [{ src: cfg.photoUrl, focus: cfg.photoFocus || "center" }].filter((item) => item.src),
+        },
+        { title: "Batch 1: Papa poem", items: batches[0] || [] },
+        { title: "Batch 2: Mama poem", items: batches[1] || [] },
+        { title: "Batch 3: Couple poem", items: batches[2] || [] },
+      ];
+
+      function normalize(item) {
+        return typeof item === "string" ? { src: item, focus: "center" } : item;
+      }
+
+      function renderItem(item, className) {
+        const data = normalize(item);
+        const article = document.createElement("article");
+        article.className = `item ${className || ""}`.trim();
+        article.innerHTML = `
+          <div class="item__preview">
+            <img alt="" src="${data.src}" style="object-position: ${data.focus || "center"}" />
+          </div>
+          <img class="item__raw" alt="" src="${data.src}" />
+          <div class="item__meta">
+            <div><strong>src</strong>: <code>${data.src}</code></div>
+            <div><strong>focus</strong>: <code>${data.focus || "center"}</code></div>
+          </div>
+        `;
+        return article;
+      }
+
+      groups.forEach((group) => {
+        const section = document.createElement("section");
+        const items = group.items.map(normalize).filter((item) => item.src);
+        section.innerHTML = `<h2>${group.title} (${items.length})</h2><div class="grid"></div>`;
+        const grid = section.querySelector(".grid");
+        items.forEach((item) => grid.appendChild(renderItem(item, group.className)));
+        app.appendChild(section);
+      });
+    })();
+  </script>
+</body>
+</html>
