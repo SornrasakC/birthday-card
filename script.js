@@ -160,13 +160,20 @@
   const PoemSlides = (() => {
     const wrap = $("poemPhotos");
     const slidesEl = $("slides");
-    const list = Array.isArray(CFG.poemPhotos) ? CFG.poemPhotos.slice() : [];
+    const photoBatches = (() => {
+      if (Array.isArray(CFG.poemPhotoBatches) && CFG.poemPhotoBatches.length) {
+        return CFG.poemPhotoBatches.map((batch) => Array.isArray(batch) ? batch.slice() : []);
+      }
+      return [Array.isArray(CFG.poemPhotos) ? CFG.poemPhotos.slice() : []];
+    })();
     const interval = CFG.poemPhotoIntervalMs || 3200;
-    let slides = [], idx = 0, timer = null, built = false;
+    let slides = [], idx = 0, timer = null, activeBatch = -1;
 
-    function build() {
-      if (built) return;
-      built = true;
+    function build(batchIndex) {
+      const list = photoBatches[batchIndex] || photoBatches[photoBatches.length - 1] || [];
+      slidesEl.innerHTML = "";
+      slides = [];
+      idx = 0;
       list.forEach((item) => {
         const src = typeof item === "string" ? item : item.src;
         const focus = typeof item === "string" ? "" : item.focus;
@@ -189,20 +196,31 @@
       slides.forEach((s, i) => s.classList.toggle("is-active", i === n));
       idx = n;
     }
+    function startTimer() {
+      clearInterval(timer);
+      if (slides.length > 1) {
+        timer = setInterval(() => show((idx + 1) % slides.length), interval);
+      }
+    }
+    function showBatch(batchIndex) {
+      const normalizedIndex = Math.min(Math.max(batchIndex, 0), photoBatches.length - 1);
+      if (normalizedIndex !== activeBatch) {
+        activeBatch = normalizedIndex;
+        build(activeBatch);
+      }
+      if (!slides.length) return;
+      wrap.hidden = false;
+      show(0);
+      startTimer();
+    }
     return {
       start() {
-        if (!list.length) return;
-        build();
-        if (!slides.length) return;
-        wrap.hidden = false;
-        show(0);
-        clearInterval(timer);
-        if (slides.length > 1) {
-          timer = setInterval(() => show((idx + 1) % slides.length), interval);
-        }
+        if (!photoBatches.some((batch) => batch.length)) return;
+        showBatch(0);
       },
+      showBatch,
       stop() { clearInterval(timer); timer = null; },
-      reset() { this.stop(); wrap.hidden = true; show(0); },
+      reset() { this.stop(); wrap.hidden = true; activeBatch = -1; slidesEl.innerHTML = ""; slides = []; idx = 0; },
     };
   })();
 
@@ -316,6 +334,7 @@
       showNextButton();
       return;
     }
+    PoemSlides.showBatch(si);
     clearVerses(() => { if (run === poemRun) revealLine(si, 0, run); });
   }
 

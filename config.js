@@ -11,22 +11,32 @@ window.CONFIG = {
   // รูปบนการ์ดหน้าแรก (รูปเดียว) — ใช้ภาพที่มี "ทั้งป๊าม๊า"
   // (ถ้าไฟล์ไม่มี จะขึ้นกรอบเปล่าให้กดเลือกรูปได้)
   photoUrl: "assets/20251124_192406.jpg",
-  photoFocus: "center", // จุดโฟกัสตอนครอป
+  photoFocus: "40% center", // จุดโฟกัสตอนครอป
   photoCaption: "❤️",
 
-  // รูปความทรงจำ — โชว์เป็นสไลด์ค่อย ๆ เฟดสลับ "ระหว่างอ่านกลอน" (หน้า 2)
-  // ภาพแรก = ทั้งป๊าม๊า  แต่ละรูปกำหนด focus (จุดโฟกัสตอนครอป) ได้
+  // รูปความทรงจำ — แยกเป็นชุดตามบทกลอน: ป๊า / ม๊า / ภาพคู่
+  // แต่ละรูปกำหนด focus (จุดโฟกัสตอนครอป) ได้
   //   - รูปแนวตั้ง (หน้าอยู่บน) ใช้ค่า y น้อย ๆ เช่น "center 15%"
   //   - รูปแนวนอน 2 คนอยู่คนละมุม ใช้ x เพื่อไม่ให้ตัดคน เช่น "30% center"
-  poemPhotos: [
-    { src: "assets/20251124_192406.jpg", focus: "center top" },  // ป๊าม๊า กินข้าว (ทั้งคู่)
-    { src: "assets/20251118_201316.jpg", focus: "center 18%" }, // ป๊า กินไอติม (แนวตั้ง)
-    { src: "assets/20251201_124803.jpg", focus: "center 20%" }, // ม๊า ทาโกะยากิ (แนวตั้ง)
-    { src: "assets/20251201_183440.jpg", focus: "center top" },  // ม๊า บนเครื่องบิน (แนวนอน)
-    { src: "assets/20260301_171251.jpg", focus: "center 30%" }, // ม๊า นั่งโซฟา (แนวนอน)
-    { src: "assets/20260301_173901.jpg", focus: "center 26%" }, // ป๊า ขี่ม้าโยก (แนวตั้ง)
-    { src: "assets/20260415_135440.jpg", focus: "center 14%" }, // ป๊า กอดอก (แนวตั้ง)
-    { src: "assets/20260301_174059.jpg", focus: "32% center" }, // ป๊าม๊า แทรมโพลีน (ทั้งคู่)
+  poemPhotoBatches: [
+    [
+      { src: "assets/tmp/192612_0.jpg", focus: "center 26%" }, // ป๊า ยิ้ม
+      { src: "assets/tmp/192611_0.jpg", focus: "center 30%" }, // ป๊า นั่งพัก
+      { src: "assets/20260301_173901.jpg", focus: "center 26%" }, // ป๊า ขี่ม้าโยก
+      { src: "assets/20260415_135440.jpg", focus: "center 18%" }, // ป๊า กอดอก
+    ],
+    [
+      { src: "assets/tmp/192617_0.jpg", focus: "center 34%" }, // ม๊า ยิ้ม
+      { src: "assets/tmp/192613_0.jpg", focus: "center 46%" }, // ม๊า ต้นแปะก๊วย
+      { src: "assets/tmp/192615_0.jpg", focus: "center 46%" }, // ม๊า ต้นแปะก๊วย
+      { src: "assets/tmp/192614_0.jpg", focus: "center 32%" }, // ม๊า ชุดญี่ปุ่น
+      { src: "assets/tmp/192616_0.jpg", focus: "center 36%" }, // ม๊า วิวเมือง
+      { src: "assets/20251201_124803.jpg", focus: "center 20%" }, // ม๊า ทาโกะยากิ
+    ],
+    [
+      { src: "assets/20251124_192406.jpg", focus: "40% center" }, // ป๊าม๊า กินข้าว
+      { src: "assets/20260301_174059.jpg", focus: "38% center" }, // ป๊าม๊า แทรมโพลีน
+    ],
   ],
   poemPhotoIntervalMs: 3200, // สลับรูปทุกกี่มิลลิวินาที
 
